@@ -4,7 +4,7 @@ This is a project seed for Single Page Applications (SPAa) built on top of https
 https://cli.angular.io/[Angular CLI] / https://github.com/oasp/oasp4js-ng2-project-seed[OASP4JS ng2 project seed].
 To integrate these two parts of a SPA, we make use of https://github.com/eirslett/frontend-maven-plugin[frontend-maven-plugin].
 
-[![Build status](https://circleci.com/gh/pietrzakp/PIISW.svg?style=svg&circle-token=592904e950e365510a6de46c34bf268b64d1086f)](http://app.circleci.com/pipelines/github/pietrzakp/PIISW)
+image:https://circleci.com/gh/pietrzakp/PIISW.svg?style=svg&circle-token=592904e950e365510a6de46c34bf268b64d1086f["Build status", link="http://app.circleci.com/pipelines/github/pietrzakp/PIISW"]
 
 == Getting started
 
