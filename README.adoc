@@ -240,3 +240,6 @@ For this to work, we used https://maven.apache.org/plugins/maven-resources-plugi
 ...
 ....
 Technically, a copy of `index.html` is created: first the file is filtered and copied to `target/client` and then copied to `src/main/client/dist` overwriting the previous version.
+
+
+New paragraph for exercise 2
