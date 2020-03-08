@@ -245,3 +245,5 @@ Technically, a copy of `index.html` is created: first the file is filtered and c
 New paragraph for exercise 2
 
 Change from branch master
+
+Commit to trigger CircleCI build
