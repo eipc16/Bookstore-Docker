@@ -12,4 +12,4 @@ function sum(numbers) {
     return result
 }
 
-print(sum(arguments))
+console.log(sum(process.argv.slice(2)))
