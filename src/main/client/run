@@ -1,5 +1,0 @@
-#!/bin/sh
-
-PATH=$PATH:node
-
-npm run-script $*
