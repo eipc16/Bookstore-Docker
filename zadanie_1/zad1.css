@@ -1,0 +1,45 @@
+ul:after {
+    display: block;
+    height: 0;
+    content: '';
+    clear: both;
+}
+
+ul {
+    background: lightgrey;
+    margin: 0;
+    padding: 5px;
+    list-style: none inside;
+}
+
+li {
+    width: 15px;
+    height: 15px;
+    padding: 15px;
+    background: yellow;
+    border: 1px solid black;
+}
+
+ul>li:nth-child(2n),
+ul>li:nth-child(5),
+ul>li:nth-child(9) {
+    float: right;
+}
+
+ul>li,
+ul>li:nth-child(2),
+ul>li:nth-child(10) {
+    float: left;
+}
+
+ul>li:nth-child(7),
+ul>li:nth-child(11) {
+    clear: left;
+}
+
+p {
+    background: lightblue;
+    margin: 0;
+    padding: 5px;
+    clear: both;
+}
