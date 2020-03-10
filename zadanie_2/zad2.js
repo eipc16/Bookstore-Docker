@@ -1,6 +1,6 @@
 function sum(numbers) {
-    let result = 0
-    let currentValue;
+    let result = 0,
+        currentValue;
     for (let i = 0; i < numbers.length; i++) {
         currentValue = parseInt(numbers[i])
         if (currentValue % 2 == 0) {
