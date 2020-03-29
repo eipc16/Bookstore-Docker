@@ -1,26 +1,57 @@
 version: '3'
 services:
-  wiremock_get:
+  users_service:
     image: wiremock-configuration
-    container_name: wiremock_get_container
+    container_name: users_service_container
     build:
       context: ./wiremock-configuration
       dockerfile: Dockerfile
     ports:
       - "8010:80"
+    networks:
+      - users_network
     volumes:
-      - ./wiremock-configuration/get-service:/opt/wiremock/mappings
-  wiremock_post:
+      - ./wiremock-configuration/user-service:/opt/wiremock/mappings
+  library_service:
     image: wiremock-configuration
-    container_name: wiremock_post_container
+    container_name: library_service_container
     ports:
       - "8011:80"
+    networks:
+      - library_network
     volumes:
-      - ./wiremock-configuration/post-service:/opt/wiremock/mappings
-  wiremock_put:
+      - ./wiremock-configuration/library-service:/opt/wiremock/mappings
+  book_service:
     image: wiremock-configuration
-    container_name: wiremock_put_container
+    container_name: book_service_container
     ports:
       - "8012:80"
+    networks:
+      - books_network
     volumes:
-      - ./wiremock-configuration/put-service:/opt/wiremock/mappings
+      - ./wiremock-configuration/book-service:/opt/wiremock/mappings
+  proxy_app:
+    image: library-reverse-proxy
+    container_name: proxy_service
+    ports:
+      - "8080:8080"
+    networks:
+      - users_network
+      - library_network
+      - books_network
+    environment:
+      SPRING_APPLICATION_JSON: '{
+        "user_service.url": "http://users_service_container",
+        "library_service.url": "http://library_service_container",
+        "book_service.url": "http://book_service_container"
+      }'
+    build:
+      context: .
+      dockerfile: Dockerfile
+networks:
+  users_network:
+    driver: bridge
+  library_network:
+    driver: bridge
+  books_network:
+    driver: bridge

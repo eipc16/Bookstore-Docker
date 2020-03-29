@@ -1,0 +1,57 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "POST",
+        "url": "/rentals"
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "serviceName": "library-service (POST)",
+          "result": "SUCCESS",
+          "message": "Successfully added new book rental!"
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/rentals",
+        "bodyPatterns" : [ {
+          "equalToJson" : "{\n    \"bookId\": 5\n}",
+          "ignoreArrayOrder" : true,
+          "ignoreExtraElements" : true
+        } ]
+      },
+      "response": {
+        "status": 412,
+        "body": "There is no book with id: 5",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "url": "/rentals",
+        "bodyPatterns" : [ {
+          "equalToJson" : "{\n    \"userId\": 1,\n    \"bookId\": 1\n}",
+          "ignoreArrayOrder" : true,
+          "ignoreExtraElements" : true
+        } ]
+      },
+      "response": {
+        "status": 412,
+        "body": "User with id: 1 already rented a book with id 1",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}

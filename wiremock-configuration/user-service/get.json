@@ -1,0 +1,40 @@
+{
+  "mappings": [
+    {
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/users/([0-9]+)"
+      },
+      "response": {
+        "status": 200,
+        "jsonBody": {
+          "id": "{{request.path.[1]}}",
+          "firstName": "Przemysław",
+          "lastName": "Pietrzak",
+          "address": {
+            "country": "Polska",
+            "city": "Wrocław",
+            "street": "Ulicowa",
+            "streetNumber": 5
+          }
+        },
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/users/13"
+      },
+      "response": {
+        "status": 412,
+        "body": "User with id: 13 does not exist",
+        "headers": {
+          "Content-Type": "application/json"
+        }
+      }
+    }
+  ]
+}
