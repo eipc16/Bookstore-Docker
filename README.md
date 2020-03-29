@@ -10,6 +10,14 @@ in main directory. It should start 4 containers:
 - `library_service_container` - container with mocked server that handles POST request
 - `book_service_container` - container with mocked server that handles PUT request
 
+To start only containers with wiremock servers use:
+```
+docker-compose -f ./docker-compose-wiremock.yml up
+```
+Services will be available at:
+- `users_service_container`: `http://localhost:8010`
+- `library_service_container`: `http://localhost:8011`
+- `book_service_container`: `http://localhost:8012`
 
 ## Using proxy
 Once all containers are started you can use `proxy-service` by performing one of the following request:

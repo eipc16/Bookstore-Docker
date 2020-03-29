@@ -1,7 +1,9 @@
 package org.pietrzakp.proxyservice.infrastructure.clients;
 
 import org.pietrzakp.proxyservice.infrastructure.dto.UserDTO;
+import org.pietrzakp.proxyservice.infrastructure.handlers.ExternalClientExceptionHandler;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -9,6 +11,12 @@ public class UserServiceClient extends BaseClient {
 
     @Value("${user_service.url}")
     private String BASE_URL;
+
+    private static final String SERVICE_NAME = "users-service";
+
+    public UserServiceClient(RestTemplateBuilder restTemplateBuilder) {
+        super(restTemplateBuilder, new ExternalClientExceptionHandler(SERVICE_NAME));
+    }
 
     public UserDTO getUserById(Long id) {
         return getRest().getForObject(BASE_URL + "/users/" + id, UserDTO.class);

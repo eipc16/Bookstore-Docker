@@ -1,0 +1,26 @@
+version: '3'
+services:
+  users_service:
+    image: wiremock-configuration
+    container_name: users_service_container
+    build:
+      context: ./wiremock-configuration
+      dockerfile: Dockerfile
+    ports:
+      - "8010:80"
+    volumes:
+      - ./wiremock-configuration/user-service:/opt/wiremock/mappings
+  library_service:
+    image: wiremock-configuration
+    container_name: library_service_container
+    ports:
+      - "8011:80"
+    volumes:
+      - ./wiremock-configuration/library-service:/opt/wiremock/mappings
+  book_service:
+    image: wiremock-configuration
+    container_name: book_service_container
+    ports:
+      - "8012:80"
+    volumes:
+      - ./wiremock-configuration/book-service:/opt/wiremock/mappings
