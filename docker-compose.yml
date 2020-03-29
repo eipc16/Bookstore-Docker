@@ -1,0 +1,26 @@
+version: '3'
+services:
+  wiremock_get:
+    image: wiremock-configuration
+    container_name: wiremock_get_container
+    build:
+      context: ./wiremock-configuration
+      dockerfile: Dockerfile
+    ports:
+      - "8010:80"
+    volumes:
+      - ./wiremock-configuration/get-service:/opt/wiremock/mappings
+  wiremock_post:
+    image: wiremock-configuration
+    container_name: wiremock_post_container
+    ports:
+      - "8011:80"
+    volumes:
+      - ./wiremock-configuration/post-service:/opt/wiremock/mappings
+  wiremock_put:
+    image: wiremock-configuration
+    container_name: wiremock_put_container
+    ports:
+      - "8012:80"
+    volumes:
+      - ./wiremock-configuration/put-service:/opt/wiremock/mappings

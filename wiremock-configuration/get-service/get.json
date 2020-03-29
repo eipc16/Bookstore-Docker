@@ -1,0 +1,23 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/get/"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "method": "GET",
+      "firstName": "Przemysław",
+      "lastName": "Pietrzak",
+      "address": {
+        "country": "Polska",
+        "city": "Wrocław",
+        "street": "Ulicowa",
+        "streetNumber": 5
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

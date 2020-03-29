@@ -1,0 +1,23 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/put/"
+  },
+  "response": {
+    "status": 200,
+    "jsonBody": {
+      "method": "PUT",
+      "firstName": "Przemysław",
+      "lastName": "Pietrzak",
+      "address": {
+        "country": "Polska",
+        "city": "Wrocław",
+        "street": "Ulicowa",
+        "streetNumber": 5
+      }
+    },
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}
