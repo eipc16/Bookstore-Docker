@@ -5,9 +5,9 @@ Build status:
 
 ## Starting application
 To start application run command
-```
-docker-compose up
-```
+
+    docker-compose up
+
 in main directory. It should start 4 containers:
 - `proxy_service` - main container responsible for redirecting requests
 - `users_service_container` - container with mocked server that handles GET request
@@ -15,9 +15,9 @@ in main directory. It should start 4 containers:
 - `book_service_container` - container with mocked server that handles PUT request
 
 To start only containers with wiremock servers use:
-```
-docker-compose -f ./docker-compose-wiremock.yml up
-```
+
+    docker-compose -f ./docker-compose-wiremock.yml up
+
 Services will be available at:
 - `users_service_container`: `http://localhost:8010`
 - `library_service_container`: `http://localhost:8011`
@@ -124,8 +124,18 @@ Once all containers are started you can use `proxy-service` by performing one of
 }
 ```
 ## Running tests
+Instructions on running tests
+
+### JUnit (with WireMock)
 To start tests simply type:
-```
-./mvnw test
-```
+
+    ./mvnw test
+
 in main directory or start them directly
+
+### Integration tests (with Postman)
+Collection with integration tests can be found under:
+
+    ./postman-integration-tests/PIISW.postman_collection.json
+    
+Starting `Collection Run` on given collection will start prepared tests
