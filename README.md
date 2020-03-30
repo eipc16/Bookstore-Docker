@@ -1,4 +1,8 @@
 # Exercise 3 - PIISW
+
+Build status: 
+[![CircleCI](https://circleci.com/gh/pietrzakp/PIISW/tree/Lista3.svg?style=svg&circle-token=592904e950e365510a6de46c34bf268b64d1086f)](http://app.circleci.com/pipelines/github/pietrzakp/PIISW/Lista3)
+
 ## Starting application
 To start application run command
 ```
