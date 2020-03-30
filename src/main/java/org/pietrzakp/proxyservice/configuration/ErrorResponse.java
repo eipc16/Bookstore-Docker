@@ -15,6 +15,15 @@ public class ErrorResponse {
     private String service;
     private String localPath;
 
+    ErrorResponse(RuntimeException ex, String path) {
+        this.exception = ex.getClass().getSimpleName();
+        this.timestamp = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());
+        this.status = 500;
+        this.message = ex.getMessage();
+        this.service = "proxy-service";
+        this.localPath = path;
+    }
+
     ErrorResponse(ExternalServiceException ex, String path) {
         this.exception = ex.getClass().getSimpleName();
         this.timestamp = DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(LocalDateTime.now());

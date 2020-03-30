@@ -15,6 +15,12 @@ public class ControllerExceptionAdvisor extends ResponseEntityExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ControllerExceptionAdvisor.class);
 
+    @ExceptionHandler(value = RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex, HttpServletRequest request) {
+        LOGGER.error("Internal error occured. \nMessage: {}\nStacktract: {}", ex.getMessage(), ex.getStackTrace());
+        return ResponseEntity.status(500)
+                .body( new ErrorResponse(ex, request.getRequestURI()));
+    }
     @ExceptionHandler(value = ExternalServiceException.class)
     public ResponseEntity<ErrorResponse> handleExternalServiceException(ExternalServiceException ex, HttpServletRequest request) {
         LOGGER.error("An error happened while calling '{}', Message: '{}'", ex.getServiceName(), ex.getMessage());
