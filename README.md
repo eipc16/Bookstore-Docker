@@ -53,7 +53,7 @@ Once all containers are started you can use `proxy-service` by performing one of
     "localPath": "/library"
 }
 ```
-### POST `http://localhost:8080/library`
+### PUT `http://localhost:8080/library`
 * Request Body: 
 ```json
 {
@@ -83,7 +83,7 @@ Once all containers are started you can use `proxy-service` by performing one of
 }
 ```
 
-### PUT `http://localhost:8080/library`
+### POST `http://localhost:8080/library`
 * Request Body:
 ```json
 {
