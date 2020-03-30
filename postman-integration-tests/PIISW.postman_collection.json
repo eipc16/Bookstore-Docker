@@ -1,0 +1,531 @@
+{
+	"info": {
+		"_postman_id": "76ad38d4-3bf6-4ee6-8bbd-fbe27c834cc3",
+		"name": "PIISW",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "[GET] - Fetch Correct User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37aa9bac-b241-4124-b7c9-703edf0bb0f5",
+						"exec": [
+							"tests[\"Response code 200\"] = responseCode.code === 200;",
+							"tests[\"Correct Content-Type\"] = responseHeaders[\"Content-Type\"] === \"application/json\"",
+							"",
+							"const response = JSON.parse(responseBody);",
+							"const idVariable = pm.variables.get(\"fetchedUserId\")",
+							"",
+							"tests[\"User has correctId == \" + idVariable] = (idVariable == response.id)",
+							"",
+							"const user = {",
+							"    \"id\": environment.fetchedUserId,",
+							"    \"firstName\": \"Przemysław\",",
+							"    \"lastName\": \"Pietrzak\",",
+							"    \"address\": {",
+							"        \"country\": \"Polska\",",
+							"        \"city\": \"Wrocław\",",
+							"        \"street\": \"Ulicowa\",",
+							"        \"streetNumber\": 5",
+							"    }",
+							"}",
+							"",
+							"tests[\"Returns correct user: \"] = responseBody == JSON.stringify(user)"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e22e0c20-3e76-4d8c-a476-0c4f1b028c5f",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/library?id={{fetchedUserId}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"library"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{fetchedUserId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[GET] - Fetch Unknown User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "37aa9bac-b241-4124-b7c9-703edf0bb0f5",
+						"exec": [
+							"tests[\"Response code 412\"] = responseCode.code === 412;",
+							"tests[\"Correct Content-Type\"] = responseHeaders[\"Content-Type\"] === \"application/json\"",
+							"",
+							"const response = JSON.parse(responseBody);",
+							"const idVariable = pm.variables.get(\"unknownUserId\")",
+							"const exceptionName = \"ExternalServiceException\"",
+							"const serviceName = \"users-service\"",
+							"",
+							"tests[\"Returns correct error message\"] = response.message == `User with id: ${idVariable} does not exist`",
+							"tests[\"Returns correct exception\"] = response.exception === exceptionName",
+							"tests[\"Returns correct service\"] = response.service = serviceName"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/library?id={{unknownUserId}}",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"library"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "{{unknownUserId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[POST] - Add correct book rental",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9572b569-7fe2-47c1-968b-14093aabc239",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "c933ca02-183e-4e0c-b9d7-2f23bcff5b1a",
+						"exec": [
+							"tests[\"Response code 200\"] = responseCode.code === 200;",
+							"tests[\"Correct Content-Type\"] = responseHeaders[\"Content-Type\"] === \"application/json\"",
+							"",
+							"const response = JSON.parse(responseBody);",
+							"",
+							"tests[\"Correct service\"] = response.serviceName.includes(\"library-service\")",
+							"tests[\"Returns correct result\"] = response.result === \"SUCCESS\"",
+							"tests[\"Returns correct message\"] = response.message === \"Successfully added new book rental!\""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{correctUserId}},\n    \"bookId\": {{correctBookId}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/library",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"library"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[POST] - Add rental with unknown book",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "1c2cdada-5681-4f85-9ae8-886010c12f91",
+						"exec": [
+							"tests[\"Response code 412\"] = responseCode.code === 412;",
+							"tests[\"Correct Content-Type\"] = responseHeaders[\"Content-Type\"] === \"application/json\"",
+							"",
+							"const response = JSON.parse(responseBody);",
+							"const bookId = pm.variables.get(\"unknownBookId\")",
+							"const exceptionName = \"ExternalServiceException\"",
+							"const serviceName = \"library-service\"",
+							"",
+							"tests[\"Returns correct error message\"] = response.message == `There is no book with id: ${bookId}`",
+							"tests[\"Returns correct exception\"] = response.exception === exceptionName",
+							"tests[\"Returns correct service\"] = response.service"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{correctUserId}},\n    \"bookId\": {{unknownBookId}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/library",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"library"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[POST] - Add rental with already rented book by user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "9a280dda-25f2-40eb-a267-26b4356a3331",
+						"exec": [
+							"tests[\"Response code 412\"] = responseCode.code === 412;",
+							"tests[\"Correct Content-Type\"] = responseHeaders[\"Content-Type\"] === \"application/json\"",
+							"",
+							"const response = JSON.parse(responseBody);",
+							"const userId = pm.variables.get(\"rentedUserId\")",
+							"const bookId = pm.variables.get(\"rentedBookId\")",
+							"const exceptionName = \"ExternalServiceException\"",
+							"const serviceName = \"library-service\"",
+							"",
+							"tests[\"Returns correct error message\"] = response.message == `User with id: ${userId} already rented a book with id ${bookId}`",
+							"tests[\"Returns correct exception\"] = response.exception === exceptionName",
+							"tests[\"Returns correct service\"] = response.service"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": {{rentedUserId}},\n    \"bookId\": {{rentedBookId}}\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/library",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"library"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PUT] - Put book with correct id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "245ea5f3-b1c7-4591-8157-495e2f87ba03",
+						"exec": [
+							"tests[\"Response code 200\"] = responseCode.code === 200;",
+							"tests[\"Correct Content-Type\"] = responseHeaders[\"Content-Type\"] === \"application/json\"",
+							"",
+							"const response = JSON.parse(responseBody);",
+							"const bookId = pm.variables.get(\"correctBookId\")",
+							"",
+							"tests[\"Correct service\"] = response.serviceName.includes(\"book-service\")",
+							"tests[\"Returns correct result\"] = response.result === \"SUCCESS\"",
+							"tests[\"Returns correct message\"] = response.message === `Successfully put book with id: ${bookId}!`"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": {{correctBookId}},\n    \"bookName\": \"New book\",\n    \"authorName\": \"author\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/library",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"library"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "[PUT] - Put book with negative id",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5d4fa84d-0158-4ef7-8efc-540600568c82",
+						"exec": [
+							"tests[\"Response code 412\"] = responseCode.code === 412;",
+							"tests[\"Correct Content-Type\"] = responseHeaders[\"Content-Type\"] === \"application/json\"",
+							"",
+							"const response = JSON.parse(responseBody);",
+							"const bookId = pm.variables.get(\"wrongBookId\")",
+							"const exceptionName = \"ExternalServiceException\"",
+							"const serviceName = \"book-service\"",
+							"",
+							"tests[\"Returns correct error message\"] = response.message == \"Book id cannot be less than zero!\"",
+							"tests[\"Returns correct exception\"] = response.exception === exceptionName",
+							"tests[\"Returns correct service\"] = response.service"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": {{wrongBookId}},\n    \"bookName\": \"New book\",\n    \"authorName\": \"author\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/library",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"library"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "6d0ce32d-c4e3-4ef2-af35-947353305c8e",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "312fbf8b-ff7b-49a9-9e7b-cfe7b00ad558",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "8294ddc4-d8d0-425d-adf5-86bd5f29f067",
+			"key": "fetchedUserId",
+			"value": "3",
+			"type": "string"
+		},
+		{
+			"id": "e5dade31-fdfd-49e8-a6ba-f9a377c0c14d",
+			"key": "unknownUserId",
+			"value": "13",
+			"type": "string"
+		},
+		{
+			"id": "74a6b645-ccbc-4b95-99e2-917564475d3c",
+			"key": "correctBookId",
+			"value": "10",
+			"type": "string"
+		},
+		{
+			"id": "ac9529ea-4cc0-4095-b2fb-1e11a9a7611b",
+			"key": "wrongBookId",
+			"value": "-10",
+			"type": "string"
+		},
+		{
+			"id": "855662e3-d0af-4678-9d9f-2c2fd653fdd9",
+			"key": "unknownBookId",
+			"value": "5",
+			"type": "string"
+		},
+		{
+			"id": "cc1a344c-952c-4404-a7d8-b0e1cd0df746",
+			"key": "rentedUserId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "10253888-11da-4c9a-8bbb-37bee9f6ceb1",
+			"key": "rentedBookId",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"id": "c85d6c70-4cd5-42ed-b136-36644ee573d2",
+			"key": "host",
+			"value": "localhost",
+			"type": "string"
+		},
+		{
+			"id": "1e71494b-3ddd-41ec-9118-be48a4e0ebcc",
+			"key": "port",
+			"value": "8080",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
