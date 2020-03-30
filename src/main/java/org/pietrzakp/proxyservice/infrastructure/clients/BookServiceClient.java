@@ -20,6 +20,15 @@ public class BookServiceClient extends BaseClient {
 
     private static final String SERVICE_NAME = "book-service";
 
+    public BookServiceClient() {
+        this(new RestTemplateBuilder());
+    }
+
+    public BookServiceClient(String serviceUrl) {
+        this(new RestTemplateBuilder());
+        this.baseUrl = serviceUrl;
+    }
+
     public BookServiceClient(RestTemplateBuilder restTemplateBuilder) {
         super(restTemplateBuilder, new ExternalClientExceptionHandler(SERVICE_NAME));
     }

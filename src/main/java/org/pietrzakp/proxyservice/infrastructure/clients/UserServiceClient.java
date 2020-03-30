@@ -10,15 +10,24 @@ import org.springframework.stereotype.Component;
 public class UserServiceClient extends BaseClient {
 
     @Value("${user_service.url}")
-    private String BASE_URL;
+    private String baseUrl;
 
     private static final String SERVICE_NAME = "users-service";
+
+    public UserServiceClient() {
+        this(new RestTemplateBuilder());
+    }
+
+    public UserServiceClient(String serviceUrl) {
+        this(new RestTemplateBuilder());
+        this.baseUrl = serviceUrl;
+    }
 
     public UserServiceClient(RestTemplateBuilder restTemplateBuilder) {
         super(restTemplateBuilder, new ExternalClientExceptionHandler(SERVICE_NAME));
     }
 
     public UserDTO getUserById(Long id) {
-        return getRest().getForObject(BASE_URL + "/users/" + id, UserDTO.class);
+        return getRest().getForObject(baseUrl + "/users/" + id, UserDTO.class);
     }
 }

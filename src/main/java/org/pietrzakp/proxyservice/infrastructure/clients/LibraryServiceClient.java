@@ -15,6 +15,15 @@ public class LibraryServiceClient extends BaseClient {
 
     private static final String SERVICE_NAME = "library-service";
 
+    public LibraryServiceClient() {
+        this(new RestTemplateBuilder());
+    }
+
+    public LibraryServiceClient(String serviceUrl) {
+        this(new RestTemplateBuilder());
+        this.baseUrl = serviceUrl;
+    }
+
     public LibraryServiceClient(RestTemplateBuilder restTemplateBuilder) {
         super(restTemplateBuilder, new ExternalClientExceptionHandler(SERVICE_NAME));
     }
