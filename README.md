@@ -27,37 +27,102 @@ Services will be available at:
 Once all containers are started you can use `proxy-service` by performing one of the following request:
 
 ### GET `http://localhost:8080/library?id=<USER_ID>`
-Response:
+* Response example:
 ```json
-
+{
+    "id": <USER_ID>,
+    "firstName": "Przemysław",
+    "lastName": "Pietrzak",
+    "address": {
+        "country": "Polska",
+        "city": "Wrocław",
+        "street": "Ulicowa",
+        "streetNumber": 5
+    }
+}
+```
+* Error example:
+```json
+{
+    "exception": "ExternalServiceException",
+    "timestamp": "2020-03-30T17:18:27.916216",
+    "status": 412,
+    "error": "Precondition Failed",
+    "message": "User with id: <USER_ID> does not exist",
+    "service": "users-service",
+    "localPath": "/library"
+}
 ```
 ### POST `http://localhost:8080/library`
-* Request Body:
-```json
-{
-  "json": "mock"
-}
-```
-* Response:
-```json
-{
-  "json": "mock"
-}
-```
-### PUT `http://localhost:8080/library`
 * Request Body: 
 ```json
 {
-  "json": "mock"
+    "id": 5,
+    "bookName": "New book",
+    "authorName": "author"
 }
 ```
 * Response:
 ```json
 {
-  "json": "mock"
+    "serviceName": "book-service (PUT)",
+    "result": "SUCCESS",
+    "message": "Successfully put book with id: 5!"
+}
+```
+* Error example:
+```json
+{
+    "exception": "ExternalServiceException",
+    "timestamp": "2020-03-30T17:21:59.930308",
+    "status": 412,
+    "error": "Precondition Failed",
+    "message": "Book id cannot be less than zero!",
+    "service": "book-service",
+    "localPath": "/library"
 }
 ```
 
+### PUT `http://localhost:8080/library`
+* Request Body:
+```json
+{
+    "userId": 6,
+    "bookId": 6
+}
+```
+* Response example:
+```json
+{
+    "serviceName": "library-service (POST)",
+    "result": "SUCCESS",
+    "message": "Successfully added new book rental!"
+}
+```
+* Error example 1:
+```json
+{
+    "exception": "ExternalServiceException",
+    "timestamp": "2020-03-30T17:20:21.208138",
+    "status": 412,
+    "error": "Precondition Failed",
+    "message": "User with id: 1 already rented a book with id 1",
+    "service": "library-service",
+    "localPath": "/library"
+}
+```
+* Error example 2:
+```json
+{
+    "exception": "ExternalServiceException",
+    "timestamp": "2020-03-30T17:20:36.027495",
+    "status": 412,
+    "error": "Precondition Failed",
+    "message": "There is no book with id: 5",
+    "service": "library-service",
+    "localPath": "/library"
+}
+```
 ## Running tests
 To start tests simply type:
 ```
