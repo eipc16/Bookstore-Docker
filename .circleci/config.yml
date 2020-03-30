@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/openjdk:8-jdk
+      - image: circleci/openjdk:13-jdk-buster
 
     working_directory: ~/repo
 
@@ -14,5 +14,5 @@ jobs:
     steps:
       - checkout
 
-      - run: ./mvnw install
+      - run: ./mvnw clean install
       
